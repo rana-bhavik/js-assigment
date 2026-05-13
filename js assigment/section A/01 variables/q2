@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+ // Q12. Write a program that demonstrates all 6 primitive data types in JavaScript with real-world examples for
+// each
+
+
+let name = "Rana Bhavik";
+console.log("string:", name);
+
+let price = 499;
+let rating = 4.5;
+console.log("number:", price, rating);
+
+
+let islog = true;
+let isprim = false;
+console.log("bool:", islog,isprim);
+
+
+let phoneNumber;
+console.log("undefine:", phoneNumber);
+
+
+
+let middleName = null;
+console.log("null:", middleName);
+
+    </script>
+    
+</body>
+</html>
