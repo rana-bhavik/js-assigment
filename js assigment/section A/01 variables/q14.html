@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Q14. Write a function isValidAge(age) that checks if age is a valid number (not NaN, not negative, not a
+// string).
+
+function isage(age){
+  if(18 >=age){
+return true;
+  }
+
+
+  if(Number.isNaN(age)){
+return false;
+  }
+
+
+if(typeof age !== "number"){
+return false;       
+}
+
+
+
+}
+
+console.log(isage(18));
+console.log(isage('5'));
+console.log(isage(0));
+console.log(isage(NaN));
+
+    </script>
+</body>
+</html>
