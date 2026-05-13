@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+
+// Q11. Swap two variables without using a third variable. Implement three different approaches (XOR,
+// // arithmetic, destructuring).
+
+
+
+let a = 5;
+let b = 2;
+
+// using XOR confused 
+
+
+
+
+[a,b] = [b,a]       // destructure method
+console.log(a,b)
+
+
+a = a+b   // a= 7
+a = a-5    // a = 5   
+b = a +3;
+
+console.log(a,b);
+
+    </script>
+    
+</body>
+</html>
