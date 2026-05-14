@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text">
+    <button>add salary</button>
+    <ul id="list"></ul>
+
+
+
+
+    <script>
+
+
+let btn = document.querySelector('button');
+
+btn.addEventListener('click',()=>{
+let input = Number(document.querySelector('input').value);
+let HRA = input * 0.40;
+console.log(HRA)
+let DA = input * 0.20;
+console.log(DA);
+let PF = input * 0.12;
+console.log(PF);
+
+let gross = input + HRA + DA;
+console.log("this is gross salary",gross);
+let netsery = gross - PF
+console.log("this is my netsalary",netsery);
+
+
+let list = document.querySelector('#list');
+// let li = document.createElement('li');
+list.innerHTML = `<li> Salary = ${input}</li>
+               <li> HRA = ${HRA}</li> 
+               <li> DA = ${DA}</li>
+               <li> PF = ${PF}</li>
+               <li> net salary = ${netsery}</li>`;
+
+
+
+
+});
+
+    </script>
+</body>
+</html>
