@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<input  type="text" placeholder="enter your name">
+<input  type="number"id="roll" placeholder="enter your roll number">
+
+<br>
+<hr>
+<input type="number" id="m1" placeholder="subject 1">
+<br>
+<input type="number" id="m2" placeholder="subject 2">
+<br>
+<input type="number" id="m3" placeholder="subject 3">
+<br>
+<input type="number" id="m4" placeholder="subject 4">
+<br>
+<input type="number" id="m5" placeholder="subject 5">
+<br>
+<button id = "btn1"> add student</button>
+<hr>
+<button id = "btn2"> show student</button>
+<button id = "btn3"> show ranker</button>
+
+<br>
+
+<input type="text" id="sech" placeholder="serch by id">
+<button id="btn6"> serch </button>
+
+<div class="show"></div>
+
+
+    <script>
+let student = [];
+// let sum = 0;
+
+let output = "";
+
+let btn2 = document.querySelector("#btn2");
+let btn3 = document.querySelector("#btn3");
+ let btn1 = document.querySelector("#btn1");
+
+
+
+
+ btn1.addEventListener('click',()=>{
+
+
+
+    let input = document.querySelector('input').value;
+document.querySelector('input').value="";
+let rollin = Number(document.querySelector("#roll").value);
+ document.querySelector("#roll").value="";
+
+
+ let m1 = Number(document.querySelector("#m1").value);
+ document.querySelector("#m1").value=""
+  let m2 = Number(document.querySelector("#m2").value);
+  document.querySelector("#m2").value=""
+  let m3 = Number(document.querySelector("#m3").value);
+  document.querySelector("#m3").value=""
+  let m4 = Number(document.querySelector("#m4").value);
+  document.querySelector("#m4").value=""
+  let m5 = Number(document.querySelector("#m5").value);
+  document.querySelector("#m5").value=""
+
+
+
+
+ 
+ let marks = [m1,m2,m3,m4,m5];
+
+
+let total = marks.reduce((sum,marks)=>{
+return sum + marks;
+},0);
+
+let percen = total / 5;
+
+
+ let grade = percen >= 90 ? "grade A": percen >= 75 ? "grade B" :  percen >= 60 ? "grade C" :  percen >= 40 ? "grad D"   : "grade F"
+
+
+
+student.push({
+
+input,
+rollin,
+marks,
+total,
+percen,
+grade
+
+
+
+})
+
+console.log("add data of student");
+console.log(student);
+
+
+ });
+
+ btn2.addEventListener('click',()=>{
+
+
+student.forEach((evl)=>{
+
+
+// let div = document.querySelector(".show");
+// let div2 = document.createElement('div');
+// div2.innerHTML = `
+
+// <h1>  Student Repots </h1>
+// <p> Name : ${evl.input}    </p>
+// <p> Roll : ${evl.rollin}    </p>
+// <p> Marks : ${evl.marks}    </p>
+// <p> Total : ${evl.total}    </p>
+// <p> percentage : ${evl.percen}</p>
+// <p> Grade : ${evl.grade}</p>
+
+
+
+
+// `;
+// div.appendChild(div2)
+
+
+output += `
+
+
+
+<h1>  Student Repots </h1>
+<p> Name : ${evl.input}    </p>
+<p> Roll : ${evl.rollin}    </p>
+<p> Marks : ${evl.marks}    </p>
+<p> Total : ${evl.total}    </p>
+<p> percentage : ${evl.percen}</p>
+<p> Grade : ${evl.grade}</p>
+
+`;
+
+
+document.querySelector(".show").innerHTML = output;
+
+
+console.log("std show was clicked");
+
+
+
+
+
+
+
+});
+
+ })
+
+ 
+
+
+
+ btn3.addEventListener('click',()=>{
+
+let top = student.reduce((high,low)=>{
+     return high.percen > low.percen ? high : low
+});
+
+output = `
+
+<h1> ranker <h1>
+<p>  Name : ${top.input}  </p>
+<p>  Roll : ${top.rollin}  </p>
+<p>  Percentage : ${top.percen}  </p>
+
+
+
+`;
+
+console.log("btn3 was click");
+
+
+document.querySelector(".show").innerHTML = output;
+
+
+
+ });
+
+
+ 
+
+let btn6 = document.querySelector('#btn6');
+
+btn6.addEventListener("click",()=>{
+
+let serch = document.querySelector('#sech').value;
+             document.querySelector('#sech').value="";
+
+
+    student.forEach((e)=>{
+if(e.input == serch || e.rollin == serch){
+    output = `
+
+<h1> ranker <h1>
+<p>  Name : ${e.input}  </p>
+<p>  Roll : ${e.rollin}  </p>
+<p>  Percentage : ${e.percen}  </p>
+
+
+
+`;
+
+
+document.querySelector(".show").innerHTML = output;
+}
+
+
+    });
+// let res = student.filter((evl)=>{
+
+// if(evl.input.includes(serch) || evl.rollin.includes(serch)){
+// return
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+
+
+ 
+
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
