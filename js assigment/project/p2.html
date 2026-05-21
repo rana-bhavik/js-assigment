@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+ <h2>quiz app</h2>
+
+<div id="quiz"></div>
+
+<button>Submit</button>
+
+<h3 id="rs"></h3>
+
+    <script>
+
+
+
+let sub = document.querySelector('button');
+let quz = document.querySelector('#quiz');
+
+
+let qes =  [
+    {
+      q: "What is JS?",
+      options: ["Language", "Database", "OS", "Browser"],
+      ans  : "Language",
+      explanation: "JavaScript is a programming language"
+    },
+    {
+      q: "Which keyword declares variable?",
+      options: ["var", "loop", "if", "class"],
+       ans  : "var",
+      explanation: "var/let/const are used"
+    },
+    {
+      q: "Which is correct array method?",
+      options: ["push()", "put()", "add()", "insert()"],
+    ans  : "push()",
+      explanation: "push() adds element"
+    },
+    {
+      q: "JS runs in?",
+      options: ["Browser", "CPU", "RAM", "Disk"],
+      ans  : "Browser",
+      explanation: "JS runs in browser engine"
+    },
+    {
+      q: "Which symbol for AND?",
+      options: ["&&", "||", "!!", "**"],
+      ans  : "&&",
+      explanation: "&& is logical AND"
+    },
+    {
+      q: "What is DOM?",
+      options: ["Document Object Model", "Data Object Model", "Design Object", "None"],
+      ans  : "Document Object Model",
+      explanation: "DOM represents HTML structure"
+    },
+    {
+      q: "Which is loop?",
+      options: ["for", "map", "filter", "all"],
+    ans  : "for",
+      explanation: "for is loop"
+    },
+    {
+      q: "JS file extension?",
+      options: [".js", ".java", ".css", ".html"],
+    ans  : ".js",
+      explanation: ".js is JavaScript file"
+    },
+    {
+      q: "What is 2 + 2?",
+      options: ["4", "5", "6", "22"],
+      ans : "4",
+      explanation: "Basic math"
+    },
+    {
+      q: "Which is object?",
+      options: ["{ }", "[ ]", "( )", "//"],
+      ans  : "{ }",
+      explanation: "Objects use {}"
+    }
+  ]
+
+
+  qes.forEach((q,indx)=>{
+
+    let val = `
+    
+    <h3>${indx +1}.${q.q}</h3>
+    `;
+
+    
+
+
+    q.options.forEach((opnt)=>{
+
+val += `
+    <input type="radio" name="q${indx}" value="${opnt}">  
+    ${opnt}
+    <br>
+    `;
+
+
+    });
+
+
+    
+
+quz.innerHTML += val
+
+  });
+
+sub.addEventListener('click',()=>{
+
+let scor = 0;
+qes.forEach((q,indx)=>{
+                                 // basicaly for the checked raido btn
+let select = document.querySelector(`input[name="q${indx}"]:checked`);
+if(select && select.value === q.ans){
+scor++;
+}
+let sec = scor >= 9 ? "excellentgg" : scor >= 7 ? "very good" : scor >= 5 ? "good" : scor >= 3 ? "bed"  : "very bed"
+
+document.querySelector("#rs").innerHTML=`
+your score ${scor} out of ${qes.length} and ${sec}
+`;
+
+
+
+
+});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
