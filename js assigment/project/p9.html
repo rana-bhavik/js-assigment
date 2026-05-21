@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1> expensis tracker </h1>
+    <input type="text" id="txt" placeholder="Add expensis">
+    <input type="number" id="amount" placeholder="Amount">
+
+    <input type="date" id="date">
+<input type="text" id="catgor" placeholder="Category">
+
+
+
+<button id="add">Add</button>
+
+
+
+    <select id="flcata">
+    <option value="all">All Category</option>
+</select>
+
+<input type="date" id="from">
+<input type="date" id="to">
+<button id="filbtn">Filter</button>
+    
+    <ul id="list"></ul>
+
+
+ <ul id="fillis"></ul>
+
+
+    <div class="total"></div>
+
+
+  
+
+
+
+    <script>
+        let add = document.querySelector('#add');
+        let sum = 0;
+        let total = document.querySelector('.total');
+
+    let list2 = document.querySelector('#fillis');
+    let flcata1 = document.querySelector('#flcata');
+
+        add.addEventListener('click',()=>{
+            console.log("add was click")
+
+
+            let expensis = JSON.parse(localStorage.getItem('expensis')) || [];
+
+            
+
+
+
+
+            let exp = document.querySelector('#txt').value;
+            document.querySelector('#txt').value='';
+            let amt = document.querySelector('#amount').value;
+            document.querySelector('#amount').value='';
+            let date = document.querySelector('#date').value;
+            document.querySelector('#date').value='';
+            let catgo = document.querySelector('#catgor').value;
+            document.querySelector('#catgor').value='';
+            console.log(exp,amt,date,catgo);
+            expensis.push({exp,amt:Number(amt),date,catgo});
+             
+            let list = document.querySelector('#list');
+            let ol = document.createElement('ol');
+            ol.innerText = `expen : ${exp}, amount : ${amt} , date : ${date}, Category: ${catgo}`;
+            list.appendChild(ol);    
+            
+    sum = sum + Number(amt);
+ total.innerText = `total expensis : ${sum}`;
+
+
+ let remove = document.createElement('button');
+        remove.innerText = "Remove";
+        ol.appendChild(remove);
+
+
+        remove.addEventListener('click',()=>{
+            console.log("remove was click")
+            list.removeChild(ol)
+            sum = sum - Number(amt);
+             total.innerText = `total expensis : ${sum}`;
+        
+        });
+
+
+
+
+
+        
+ 
+
+
+
+
+        
+ localStorage.setItem('expensis', JSON.stringify(expensis));
+
+
+        });
+
+let drplist = document.querySelector('#flcata');
+// let alredyexist = false;
+
+
+// for(let i = 0;i < drplist.options.length; i++){
+
+//     if(drplist.options[i].value === catgo){
+//  alredyexist= true;
+// break;
+//     }
+
+// }
+
+// if(!alredyexist && catgo !== ""){
+
+//     let option = document.createElement('option');
+//     option.value = catgo;
+//     option.innerText = catgo;
+//     drplist.appendChild(option);
+
+// }
+let saveex = JSON.parse(localStorage.getItem('expensis'))
+saveex.forEach((item)=>{
+let alreadyhas = false;
+for(let i = 0;i<drplist.options.length;i++){
+if(drplist.options[i].value === item.catgo){
+alreadyhas = true;
+break;
+}
+}
+
+if(!alreadyhas && item.catgo !== ""){
+let option = document.createElement('option');
+option.value = item.catgo;
+option.innerText = item.catgo;
+drplist.appendChild(option);
+
+}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        let filter = document.querySelector('#filbtn');
+
+
+        filter.addEventListener('click',()=>{
+console.log('filter btn was clicked');
+let expensis = JSON.parse(localStorage.getItem('expensis'))||[];
+let fom = document.querySelector('#from').value;
+let to   = document.querySelector('#to').value;
+
+let filterdata = expensis.filter((item)=>{
+    console.log('filterdata was apply');
+    return item.date >=fom && item.date <= to && flcata1.value === item.catgo
+    // if(item.catgo.value === item.catgo &&  )
+    // {
+
+    // } 
+});
+
+
+filterdata.forEach((item) => {
+    // let ol = document.createElement('ol');
+    // ol.innerText = `expen : ${item.exp}, amount : ${item.amt} , date : ${item.date}, Category: ${item.catgo}`;
+    // list.appendChild(ol)
+   
+
+    let li = document.createElement('li');
+    li.innerText = `expen : ${item.exp}, amount : ${item.amt} , date : ${item.date}, Category: ${item.catgo}`;
+    list2.appendChild(li);
+   
+    
+    sum += Number(item.amt);
+
+     total.innerText = `total expensis : ${sum}`;
+
+
+
+
+     let remove = document.createElement('button');
+        remove.innerText = "Remove";
+        li.appendChild(remove);
+
+
+        remove.addEventListener('click',()=>{
+            console.log("remove was click")
+            list2.removeChild(li)
+            sum = sum - Number(item.amt);
+             total.innerText = `total expensis : ${sum}`;
+});
+
+
+});
+
+        });
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ let savedexp = JSON.parse(localStorage.getItem('expensis')) || [];
+savedexp.forEach((item)=>{
+    let ol = document.createElement('ol');
+    ol.innerText = `expen : ${item.exp}, amount : ${item.amt} , date : ${item.date}, Category: ${item.catgo}`;
+    list.appendChild(ol);
+    sum = sum + Number(item.amt);
+    total.innerText = `total expensis : ${sum}`;
+
+
+
+     let remove = document.createElement('button');
+        remove.innerText = "Remove";
+        ol.appendChild(remove);
+     remove.addEventListener('click',()=>{
+            console.log("remove was click")
+            list.removeChild(ol)
+            sum = sum - Number(item.amt);
+             total.innerText = `total expensis : ${sum}`;
+});
+    
+
+});
+
+    </script>
+   
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
