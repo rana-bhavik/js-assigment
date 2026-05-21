@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+  #menu {
+    display: none;
+  }
+</style>
+</head>
+<body>
+<h1> ATM </h1>
+   
+
+<div class="loginss">
+ <input type="password" id="login" placeholder="enter correct pin">
+    <button onclick="login()"> login</button>
+    <button onclick="logout()">Logout</button>
+    <p id="msg"> </p>
+</div>
+
+
+
+    <div id="menu">
+  <h3>Welcome User</h3>
+
+  <button onclick="balances()">Check Balance</button>
+  <button onclick="deposit()">Deposit</button>
+  <button onclick="witd()">Withdraw</button>
+  <button onclick="changepin()">Change PIN</button>
+  <button onclick="minsit()">Mini Statement</button>
+  
+  <!--<button onclick="logout()">Logout</button> -->
+
+  <!-- <div class="log" id="logBox"></div> -->
+   <p id="msg1"> </p>
+</div>
+
+
+
+
+
+
+    <script>
+
+        let corpin = "123456"
+        let attem = 3;
+        let balance = 10000;
+        let transe = [];
+        let dailylimt = 50000;
+        let usetoday = 0;
+        let timre;
+
+
+function login(){
+let input = document.querySelector('#login').value;
+document.querySelector('#login').value="";
+  if(input === corpin){
+    document.querySelector('#msg').innerText = "Login successful (PIN: ****)";
+    document.querySelector('#menu').style.display = "block";
+    // document.querySelector(".loginss").style.display = "none";
+
+    timer();
+  }else{
+ attem--;
+
+document.querySelector('#msg').innerText = 'wrong pin attempt left -' + attem;
+if(attem === 0){
+document.querySelector('#msg').innerText = ' account was locked'
+}
+  }
+timer()
+
+}
+
+
+
+
+function balances(){
+document.querySelector('#msg1').innerText = "Balances   :-" + balance;
+transe.push(`Balance : ${balance}`);
+
+timer()
+}
+
+
+function deposit(){
+  let amt = Number(prompt("enter the amount"));
+  if(amt <= 0){
+   document.querySelector('#msg1').innerText = 'invalid amount'
+  }else{
+   balance += amt 
+document.querySelector('#msg1').innerText = `Deposite  :-${amt}`;
+transe.push(`deposit : +${amt}`);
+  }
+   timer()
+}
+
+
+
+
+function witd(){
+  let amt1 = Number(prompt("enter the amout"))
+  if(amt1 > balance){
+  document.querySelector('#msg1').innerText = "insuficiant balance"
+  }else if(usetoday + amt1 > dailylimt){
+document.querySelector('#msg1').innerText = "today limit exceed 50000"
+  }else{
+    document.querySelector('#msg1').innerText = `withdrow amt today :- ${amt1}`;
+    balance -= amt1
+    usetoday += amt1;
+    transe.push(`withdrow : -${amt1}`);
+    
+  }
+   timer()
+}
+
+
+
+
+function changepin(){
+  let oldpin = prompt("enter the correct pin");
+  if(oldpin === corpin){
+    document.querySelector('#msg1').innerHTML =`
+     
+    <input type="password" id="pin" placeholder="enter your change pin">
+    <button id="cp"> change pin </button>
+    `;
+     
+     let cp = document.querySelector("#cp");
+     cp.addEventListener("click",()=>{
+//       if(newpin){
+//  document.querySelector('#msg1').innerText = "pin changed susscfully";
+// corpin =  newpin ;
+//       }
+//       else{
+//          document.querySelector('#msg1').innerText = "pin not changed";
+//       }
+let newpin = document.querySelector("#pin").value;
+     document.querySelector("#pin").value="";
+console.log("btn was click");
+
+   corpin = newpin;
+   document.querySelector('#msg1').innerText = "pin changed susscfully";
+     });
+
+  }
+
+
+  else{
+document.querySelector('#msg1').innerText = "incorrect pin try agin";
+
+  }
+  timer()
+}
+
+
+
+function logout(){
+  document.querySelector('#msg').innerText = "Logout successful";
+  document.querySelector('#menu').style.display = "none";
+  // document.querySelector(".loginss").style.display = "block";
+ timer()
+}
+
+function minsit(){
+  // let today = new Date();
+  // let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+  // let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  // let datetime = date + ' ' + time;
+  // transe.push(`Balance: ${balance}
+  //              deposit :+ ${balance + deposit(amt)}
+  //              withdrow : ${balance - witd(amt1)}`);
+  //document.querySelector('#msg1').innerText = "Mini Statement:\n" + transe;
+  transe.forEach((t)=>{
+    document.querySelector('#msg1').innerText += "\n"+ t ;
+   timer()
+  });
+}
+
+
+function timer(){
+    clearTimeout(timre);
+    timre = setTimeout(()=>{
+   alert("session experir");
+    },180000);
+}
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

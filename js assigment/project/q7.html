@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>  Password Vault Manager </h1>
+    <input type="text" id="site" placeholder="Site Name">
+    <input type="text" id="username" placeholder="Username">
+    <input type="text" id="password" placeholder="Password">
+    <input type="text" id="ctg" placeholder="Category">
+    <button id="se">save Entry</button>
+    <button id="gp">genrate pass</button>
+     <input type="text" id="search" placeholder="Search...">
+    <button id="sb">serch</button>
+    <button id="sc">securit</button>
+    <div class="show"></div>
+   
+    <script>
+        let vault = [];
+        
+        let se = document.querySelector("#se");
+        let gp = document.querySelector("#gp");
+        let sb = document.querySelector("#sb");
+        let sc = document.querySelector("#sc");
+
+
+        function passcheck(ps){
+       let score = 0;
+       if(ps.length >= 8){
+score++;
+       }
+       if(/[A-Z]/.test(ps)){
+      score++;
+       }
+       if(/[a-z]/.test(ps)){   
+score++; 
+       }
+       if(/[0-9]/.test(ps)){
+score++;
+       }
+       if(/[^A-Za-z0-9]/.test(ps)){
+score++;
+       }
+
+
+
+       if(score <= 2){
+return "Weak";
+       }
+       else if(score <= 3){
+return "Moderate";
+       }
+       else{
+return "Strong";
+       }
+
+
+        }
+
+
+
+        se.addEventListener("click",()=>{
+            let site = document.querySelector("#site").value;
+            document.querySelector("#site").value=""
+        let uname = document.querySelector("#username").value;
+         document.querySelector("#username").value=""
+        let pass = document.querySelector("#password").value;
+         document.querySelector("#password").value=""
+        let ctg = document.querySelector("#ctg").value;
+         document.querySelector("#ctg").value=""
+         let save = {
+            site:site,
+            username:uname,
+            password:pass,
+            category:ctg
+
+
+         }
+         vault.push(save);
+        //  document.querySelector(".show").innerHTML = `
+        //  <p> site : - ${site}</p>
+        //  <p> username : - ${uname}</p>
+        //     <p> password : - ${pass}</p>
+        //     <p> category : - ${ctg}</p>
+        //  `;
+let box = document.querySelector(".show");
+box.innerHTML = "";    // add data one by one not store multiple data inculde firsty
+        vault.forEach((v)=>{
+            box.innerHTML += `
+            <p> site : - ${v.site}</p>
+            <p> username : - ${v.username}</p>
+               <p> password : - ${v.password} (${passcheck(v.password)})</p>
+               <p> category : - ${v.category}</p>
+               <br><hr>
+            `;
+        });
+         
+        });
+
+        gp.addEventListener("click",()=>{
+            let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            let pass = "";
+            for(let i=0;i<16;i++){
+                pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.querySelector("#password").value = pass;
+        });
+
+
+        sb.addEventListener("click",()=>{
+            let ser = document.querySelector("#search").value;
+            let res = vault.filter((v)=>{
+return v.site === ser || v.username === ser || v.category === ser;
+            });
+           res.forEach((v,i)=>{
+           document.querySelector(".show").innerHTML += `
+           <h1>${i + 1} serch for :- ${ser} </h1>
+            <p> site : - ${v.site}</p>
+            <p> username : - ${v.username}</p>
+               <p> password : - ${v.password} (${passcheck(v.password)})</p>
+               <p> category : - ${v.category}</p>
+               <br><hr>
+           `;
+           });
+
+        });
+
+
+
+        sc.addEventListener("click",()=>{
+            let w = vault.filter((v)=>{
+     return passcheck(v.password) === 'Weak';
+            });
+            let m = vault.filter((v)=>{
+               return passcheck(v.password) === 'Moderate';  
+            });
+            let s = vault.filter((v)=>{
+               return passcheck(v.password) === 'Strong';  
+            });
+            document.querySelector(".show").innerHTML = `
+            <h1> Security Analysis </h1>
+            <p> Weak Passwords : ${w.length}</p>
+            <p> Moderate Passwords : ${m.length}</p>
+            <p> Strong Passwords : ${s.length}</p>
+            `;  
+        });
+
+
+
+
+    </script>
+</body>
+</html>

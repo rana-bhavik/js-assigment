@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Weather Data Analysis</h2>
+    <div class="data">
+
+    </div>
+    <button onclick="disw()">Display Weather Analysis</button>
+
+    <script>
+        let weather = [
+
+{hour:"00:00", temp:22, humidity:80, wind:10, condition:"Cloudy"},
+{hour:"01:00", temp:21, humidity:82, wind:8, condition:"Rain"},
+{hour:"02:00", temp:20, humidity:85, wind:7, condition:"Rain"},
+{hour:"03:00", temp:19, humidity:88, wind:6, condition:"Rain"},
+{hour:"04:00", temp:18, humidity:90, wind:5, condition:"Cloudy"},
+{hour:"05:00", temp:17, humidity:91, wind:5, condition:"Fog"},
+{hour:"06:00", temp:18, humidity:85, wind:7, condition:"Sunny"},
+{hour:"07:00", temp:21, humidity:75, wind:10, condition:"Sunny"},
+{hour:"08:00", temp:24, humidity:70, wind:12, condition:"Sunny"},
+{hour:"09:00", temp:27, humidity:65, wind:15, condition:"Sunny"},
+{hour:"10:00", temp:30, humidity:60, wind:16, condition:"Sunny"},
+{hour:"11:00", temp:33, humidity:55, wind:18, condition:"Sunny"},
+{hour:"12:00", temp:36, humidity:50, wind:20, condition:"Sunny"},
+{hour:"13:00", temp:39, humidity:45, wind:21, condition:"Sunny"},
+{hour:"14:00", temp:41, humidity:40, wind:22, condition:"Sunny"},
+{hour:"15:00", temp:40, humidity:42, wind:20, condition:"Sunny"},
+{hour:"16:00", temp:38, humidity:45, wind:18, condition:"Cloudy"},
+{hour:"17:00", temp:35, humidity:50, wind:16, condition:"Cloudy"},
+{hour:"18:00", temp:32, humidity:55, wind:14, condition:"Cloudy"},
+{hour:"19:00", temp:29, humidity:60, wind:12, condition:"Rain"},
+{hour:"20:00", temp:27, humidity:68, wind:10, condition:"Rain"},
+{hour:"21:00", temp:25, humidity:72, wind:9, condition:"Cloudy"},
+{hour:"22:00", temp:24, humidity:75, wind:8, condition:"Cloudy"},
+{hour:"23:00", temp:23, humidity:78, wind:7, condition:"Cloudy"}
+
+];
+
+
+function disw(){
+
+    let rain = [];
+    let heat = [];
+    let cold =[];
+  let total = 0;
+    let min = weather[0].temp;
+    let max = weather[0].temp;
+   let row = "";
+    for(let i = 0; i< weather.length; i++){
+let w = weather[i];
+total += w.temp;
+if(w.temp < min){
+    min = w.temp;
+
+}
+if(w.temp > max){
+max = w.temp;
+}
+
+if(w.condition === "Rain"){
+    rain.push(w.hour);
+
+}
+if(w.temp >= 40){
+    heat.push(w.hour);
+}
+if(w.condition === "Cloudy"){
+    cold.push(w.hour);
+}
+
+
+
+let desc = "";
+let icon = "";
+
+
+if(w.condition === "Rain"){
+    desc = "Extram Rain plz carry umbrella"
+  icon = "🌧️";
+}
+else if(w.condition === "Sunny"){
+  desc = "Extram heat plz stay hydrated"
+  icon = "☀️";
+}
+else if(w.condition === "Cloudy"){
+    desc = "Extram cold plz stay home"
+  icon = "☁️";
+}else{
+    desc = "Foggy weather plz drive carefully"
+  icon = "🌫️";
+}
+
+ row += `
+        <tr>
+            <td>${w.hour}</td>
+            <td>${w.temp}°C</td>
+            <td>${w.humidity}%</td>
+            <td>${w.wind} km/h</td>
+            <td>${w.condition} ${icon}</td>
+            <td>${desc}</td>
+        </tr>
+        `;
+
+    }
+
+
+
+let avg = total / weather.length;
+
+document.querySelector(".data").innerHTML = `
+
+<p> Max temp : - ${max}C</p>
+<p> Min temp : - ${min}C</p>
+<p> Avg temp : - ${avg}C</p>
+
+
+
+<p> Rain hours : - ${rain}</p>
+<p> Heat : - ${heat}</p>
+<p> Cold hours : - ${cold}</p>
+ <table>
+            <thead>
+                <tr>
+                    <th>Hour</th>
+                    <th>Temp</th>
+                    <th>Humidity</th>
+                    <th>Wind</th>
+                    <th>Condition</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${row}
+            </tbody>
+        </table>
+`;
+// for(i = 0; i<weather.length;i++){
+// let w = weather[i];
+// let desc = "";
+// let icon = "";
+
+
+// if(w.condition === "Rain"){
+//     desc = "Extram Rain plz carry umbrella"
+//   icon = "🌧️";
+// }
+// else if(w.condition === "Sunny"){
+//   desc = "Extram heat plz stay hydrated"
+//   icon = "☀️";
+// }
+// else if(w.condition === "Cloudy"){
+//     desc = "Extram cold plz stay home"
+//   icon = "☁️";
+// }else{
+//     desc = "Foggy weather plz drive carefully"
+//   icon = "🌫️";
+// }
+
+// document.querySelector(".data").innerHTML += `
+// <tr>
+// <td>${w.hour}</td>
+// <td>${w.temp}C</td>
+// <td>${w.humidity}%</td>
+// <td>${w.wind}km/h</td>
+// <td>${w.condition} ${icon}</td>
+// <td>${desc}</td>
+// </tr>
+
+// `;
+
+// }
+
+
+}
+
+
+</script>
+</body>
+</html>

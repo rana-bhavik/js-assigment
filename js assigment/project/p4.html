@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="allproducts"></div>
+
+    <div class="cart"></div>
+
+
+
+
+    <div class="final"></div>
+    <script>
+        
+let products = [
+
+{
+    id:1,
+    name:"T-Shirt",
+    price:500,
+    category:"Clothing",
+    stock:10
+},
+
+{
+    id:2,
+    name:"Shoes",
+    price:2000,
+    category:"Footwear",
+    stock:5
+},
+
+{
+    id:3,
+    name:"Watch",
+    price:1500,
+    category:"Accessories",
+    stock:3
+},
+
+// {
+//     id:4,
+//     name:"Jeans",
+//     price:1200,
+//     category:"Clothing",
+//     stock:7
+// }
+
+];
+
+let allproducts = document.querySelector('.allproducts');
+let cart = document.querySelector('.cart');
+let final = document.querySelector('.final');
+let carts = [];
+products.forEach((product)=>{
+let div  = document.createElement('div');
+div.innerHTML = `<h3>${product.name}</h3>
+<p>Price: ${product.price}</p>
+<p>Category: ${product.category}</p>
+<p>Stock: ${product.stock}</p>
+<button class="ad">add to cart</button>
+`;
+
+
+
+
+
+
+
+
+
+
+let ad1 = div.querySelector('.ad');
+
+ad1.addEventListener('click',()=>{
+    
+    let item = document.createElement('div');
+
+    item.innerHTML = `
+    <hr>
+    <h1>Cart</h1>
+    <h3>${product.name}</h3>
+<p>Price: ${product.price}</p>
+<p>Category: ${product.category}</p>
+<p>Stock: ${product.stock}</p>
+<p>Quantity : <input type="number" class="q1" placeholder="Enter quantity" min="1"></p>
+<button class="rm">remove from cart</button>
+
+<p><input type="text" class="cp" placeholder="apply coupon"></p>
+<button class="ap">apply</button>
+<button class="co">check out</button>
+ <p class="total"></p>
+`;
+
+let rm = item.querySelector('.rm');
+rm.addEventListener('click',()=>{
+    cart.removeChild(item);
+});
+
+
+
+let ap = item.querySelector('.ap');// apply btn
+let co1 = item.querySelector('.co');// checkout btn
+let box = item.querySelector('.total'); // dispaly total
+
+
+carts.push({
+
+id:product.id,
+name:product.name,
+price:product.price,
+category:product.category,
+stock:product.stock,
+qty: Number(item.querySelector('.q1').value)
+
+
+
+});
+
+ap.addEventListener('click',()=>{
+   let q1 = Number(item.querySelector('.q1').value);
+   let cp1 = item.querySelector('.cp').value;// for coupon code input
+   let total = product.price * q1;
+   let discount = 0;
+
+   if(cp1 === "SAVE10"){
+    discount = total * 0.10;
+   }else if(cp1 === "FLAT200"){
+    discount = 200;
+   }else{
+    alert("invalid coupon");
+   }
+
+   let finaltotal = total - discount;
+   box.innerHTML = `Total Price after discount: ${finaltotal}`;
+
+
+
+
+
+});
+
+// let co = item.querySelector('.co');
+// co.addEventListener('click',()=>{
+    
+// });
+
+
+
+co1.addEventListener('click',()=>{
+
+let q1 = Number(item.querySelector('.q1').value);
+
+
+let subtotal = 0;
+
+carts.push({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    qty: q1
+});
+
+
+
+
+
+carts.forEach((i)=>{
+    subtotal += i.price * i.qty;
+});
+
+let tax = subtotal *0.18
+let gratot = subtotal + tax;
+
+document.querySelector('.final').innerHTML = `
+<h1>Order Summary</h1>
+<p>Subtotal: ${subtotal}</p>
+<p>Tax (18%): ${tax}</p>
+<p>Grand Total: ${gratot}</p>
+`;  
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cart.appendChild(item);
+})
+
+
+
+
+
+allproducts.appendChild(div);
+
+
+
+});
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

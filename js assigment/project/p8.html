@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="name" placeholder="Name">
+<input id="des" placeholder="Designation">
+<input id="sal" placeholder="Basic Salary">
+<input id="pf" placeholder="PF %">
+<input id="tax" placeholder="Tax %">
+<input id="dept" placeholder="Department">
+<input id="exp" placeholder="Years of Experience">
+<button id="add">Add Employee</button>
+<button id="sum">Department Summary</button>
+<div class="show"></div>
+<div class="sum1"></div>
+    <script>
+        let emps = [];
+        let add = document.querySelector("#add");
+        let sum = document.querySelector("#sum");
+
+
+
+        add.addEventListener("click",()=>{
+            let name = document.querySelector("#name").value;
+            document.querySelector("#name").value="";
+            let des = document.querySelector("#des").value;
+            document.querySelector("#des").value="";
+            let sal = Number(document.querySelector("#sal").value);
+            document.querySelector("#sal").value="";
+            let pf = Number(document.querySelector("#pf").value);
+            document.querySelector("#pf").value="";
+            let tax = Number(document.querySelector("#tax").value);
+            document.querySelector("#tax").value="";
+            let dept = document.querySelector("#dept").value;
+            document.querySelector("#dept").value="";
+            let exp = Number(document.querySelector("#exp").value);
+            document.querySelector("#exp").value="";
+
+            let pfamt = (pf/100)*sal;
+            let taxamt = (tax/100)*sal;
+            let gross = sal + pfamt - taxamt;
+            let net = gross;
+   let incriment = "";
+            if(exp > 2){
+              incriment = "Employee is eligible for a bonus.";
+            }else{
+incriment = "Employee is not eligible for a bonus.";
+            }
+
+            let emp = {
+                name: name,
+                designation: des,
+                basicSalary: sal,
+                pfAmount: pfamt,
+                taxAmount: taxamt,
+                grossSalary: gross,
+                netSalary: net,
+                department: dept,
+                experience: exp,
+                incriment: incriment
+            };
+
+            emps.push(emp);
+            document.querySelector(".show").innerHTML = `
+                <p>Name: ${emp.name}</p>
+                <p>Designation: ${emp.designation}</p>
+                <p>Basic Salary: ${emp.basicSalary}</p>
+                <p>PF Amount: ${emp.pfAmount}</p>
+                <p>Tax Amount: ${emp.taxAmount}</p>
+                <p>Gross Salary: ${emp.grossSalary}</p>
+                <p>Net Salary: ${emp.netSalary}</p>
+                <p>Department: ${emp.department}</p>
+                <p>Years of Experience: ${emp.experience}</p>
+                <p>Incriment: ${emp.incriment}</p>
+            `;
+        });
+
+        sum.addEventListener('click',()=>{
+            let dept ={};
+            emps.forEach((v)=>{
+                if(dept[v.department]){
+                    dept[v.department].count++;
+                    dept[v.department].tols += v.netSalary;
+                }
+
+                else{
+                    dept[v.department] = {
+                        count: 1,
+                        tols: v.netSalary
+                    };
+                }   
+
+
+
+            });
+            // for(let d in dept){
+            //     document.querySelector(".sum").innerHTML += `
+            //     <p>Department: ${d}</p>
+            //     <p>Number of Employees: ${dept[d].count}</p>
+            //     <p>Total Salary: ${dept[d].tols}</p>
+            //     <hr>
+            //     `;
+            // }
+let depts1 = document.querySelector(".sum1");
+
+            for(let d in dept){
+              
+              let avg = dept[d].tols / dept[d].count;
+              depts1.innerHTML += `
+              <hr>
+              <h1> Department Summary </h1>
+              <p>Department : ${d} </p>
+              <p>numbers of emp : ${dept[d].count} </p>
+              <p>numbers of emp : ${dept[d].tols} </p>
+              <p>Average Salary : ${avg} </p>
+
+              
+              
+              
+              
+              
+              `;  
+
+            }
+            
+
+
+        });
+    </script>
+</body>
+</html>

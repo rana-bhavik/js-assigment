@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Easy Full To-Do App</title>
+<style>
+    .done{
+    text-decoration:line-through;
+    color:gray;
+}
+</style>
+</head>
+
+<body>
+
+<h2>To-Do </h2>
+
+
+<input id="title" placeholder="Task title">
+
+<select id="priority">
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+    <option value="low">Low</option>
+</select>
+
+<input id="deadline" type="date">
+
+<input id="tags" placeholder="tags">
+
+<button onclick="addTask()">add</button>
+<button onclick="sortp()">sort prioty</button>
+<button onclick="sortd()">sort date</button>
+
+<br>
+<select id="filterStatus" onchange="showTasks()">
+    <option value="all">All</option>
+    <option value="completed">Completed</option>
+    <option value="pending">Pending</option>
+</select>
+
+<select id="filterPriority" onchange="showTasks()">
+    <option value="all">Priority</option>
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+    <option value="low">Low</option>
+</select>
+
+<input id="filterTag" placeholder="filter tag" onkeyup="showTasks()">
+
+<hr>
+
+<div id="list"></div>
+
+<h3>Daily Summary</h3>
+<div class="summary" id="summary"></div>
+
+
+<p id="msg"></p>
+
+<script>
+
+let tasks = [];
+let id = 1;
+
+
+function addTask(){
+
+    let title = document.getElementById("title").value
+    document.getElementById("title").value = "";
+    let priority = document.getElementById("priority").value;
+    document.getElementById("priority").value="";
+    let deadline = document.getElementById("deadline").value;
+    document.getElementById("deadline").value="";
+    let tags = document.getElementById("tags").value;
+    document.getElementById("tags").value="";
+
+    if(title === ""){
+        document.querySelector("#msg").innerText = "Title is required!";
+        return;
+    }
+
+    tasks.push({
+        id: id++,
+        title: title,
+        priority: priority,
+        deadline: deadline,
+        tags: tags,
+        done: false
+    });
+
+    
+    showTasks();
+}
+
+
+
+function edit(id){
+
+    let newt = prompt("Edit task:");
+
+    for(let i=0;i<tasks.length;i++){
+        if(tasks[i].id === id){
+            tasks[i].title = newt;
+        }
+    }
+
+    showTasks();
+}
+
+function toggl(id){
+
+    for(let i=0;i<tasks.length;i++){
+        if(tasks[i].id === id){
+            tasks[i].done = !tasks[i].done;
+        }
+    }
+
+    showTasks();
+}
+
+
+function delet(id){
+
+    for(let i=0;i<tasks.length;i++){
+        if(tasks[i].id === id){
+            tasks.splice(i,1);
+          
+        }
+    }
+
+    showTasks();
+}
+
+
+function sortp(){
+
+    let rank = {high:1, medium:2, low:3};
+
+    tasks.sort((a,b)=>rank[a.priority]-rank[b.priority]);
+
+    showTasks();
+}
+
+function sortd(){
+
+    tasks.sort((a,b)=> new Date(a.deadline)-new Date(b.deadline));
+
+    showTasks();
+}
+
+
+function showTasks(){
+
+    let list = document.getElementById("list");
+    list.innerHTML = "";
+
+    let status = document.getElementById("filterStatus").value;
+    let priority = document.getElementById("filterPriority").value;
+    let tag = document.getElementById("filterTag").value;
+
+    ;
+
+    for(let i=0;i<tasks.length;i++){
+
+        let t = tasks[i];
+
+       
+        if(status === "completed" && !t.done) continue;
+        if(status === "pending" && t.done) continue;
+
+        
+        if(priority !== "all" && t.priority !== priority) continue;
+
+        
+        if(tag && !t.tags) continue;
+
+        list.innerHTML += `
+        <div class="task">
+            <b class="${t.done ? 'done' : ''}">${t.title}</b>
+            <br>
+            Priority: ${t.priority} | Deadline: ${t.deadline}
+            <br>
+            Tags: ${t.tags}
+
+            <br><br>
+
+            <button onclick="toggl(${t.id})">done</button>
+            <button onclick="edit(${t.id})">edit</button>
+            <button onclick="delet(${t.id})">delet</button>
+        </div>
+        `;
+    }
+
+    summary();
+}
+
+
+function summary(){
+
+    let today = new Date().toISOString().split("T")[0];
+
+    let overdue = 0;
+    let todayCount = 0;
+    let upcoming = 0;
+
+    for(let i=0;i<tasks.length;i++){
+
+        if(tasks[i].done) continue;
+
+        if(tasks[i].deadline < today){
+            overdue++;
+        }
+        else if(tasks[i].deadline === today){
+            todayCount++;
+        }
+        else{
+            upcoming++;
+        }
+    }
+
+    document.querySelector("#summary").innerHTML =
+        "Overdue: " + overdue + "<br>" +
+        "Today: " + todayCount + "<br>" +
+        "Upcoming: " + upcoming;
+}
+
+showTasks();
+
+</script>
+
+</body>
+</html>
