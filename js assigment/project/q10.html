@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="con">
+        <h1> products mangment </h1>
+        <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Reorder Level</th>
+        <th>Supplier</th>
+        <th>Stock status</th>
+        <th>sold qty</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody id="prdt"></tbody>
+  </table>
+    </div>
+    <div class="data"></div>
+
+    <div class="valur"></div>
+    <script>
+        let data = document.querySelector(".data");
+        let valu = document.querySelector(".valur");
+ let prdcs = [
+    {
+      id:1,
+      name:"Laptop",
+      category:"Electronics",
+      price:50000,
+      stock:10,
+      reorder:5,
+      supplier:"Dell",
+      sold:15
+    },
+
+    {
+      id:2,
+      name:"Keyboard",
+      category:"Electronics",
+      price:1500,
+      stock:4,
+      reorder:5,
+      supplier:"Logitech",
+      sold:30
+    },
+
+    {
+      id:3,
+      name:"Shoes",
+      category:"Fashion",
+      price:3000,
+      stock:2,
+      reorder:8,
+      supplier:"Nike",
+      sold:5
+    },
+
+    {
+      id:4,
+      name:"T-Shirt",
+      category:"Fashion",
+      price:1200,
+      stock:6,
+      reorder:5,
+      supplier:"Puma",
+      sold:2
+    }
+  ];
+
+
+
+  function disprod(){
+    let table = document.querySelector("#prdt");
+     table.innerHTML="";
+    prdcs.forEach((p,inx)=>{
+  let lowtst = p.stock < p.reorder ? "Low Stock" : "Stock Available";
+   table.innerHTML += `
+        <tr>
+            <td>${p.id}</td>
+            <td>${p.name}</td>
+            <td>${p.category}</td>
+            <td>${p.price}</td>
+            <td>${p.stock}</td>
+            <td>${p.reorder}</td>
+            <td>${p.supplier}</td>
+            <td>${lowtst}</td>
+            <td>${p.sold}</td>
+            <td><button class="add" onclick="add(${inx})">add stock</button><button class="sold"onclick="sold(${inx})">sell</button>
+                <button class= "adt" onclick="adts(${inx})">audit</button>
+                </td>
+        </tr>
+   `;
+    });
+  
+
+  }
+
+
+  function add(inx){
+
+    let qty = Number(prompt("enter the quantity to add"));
+    if(qty > 0){
+        prdcs[inx].stock += qty;
+        disprod()
+
+    }
+    
+upd()
+    // updadata()
+
+  }
+
+
+
+
+  function sold(inx){
+    let qty = Number(prompt("enter the qty sell"));
+    if(qty > 0 && qty <= prdcs[inx].stock){
+    prdcs[inx].stock -= qty
+    prdcs[inx].sold += qty
+    // disprod()
+
+    }
+    
+upd()
+    
+  }
+
+
+  function adts(inx){
+    let newqty = Number(prompt("enter the new stock"));
+    if(newqty >= 0){
+        prdcs[inx].stock += newqty
+        // disprod()
+        
+upd()
+
+    }
+    
+
+  }
+
+
+//   function lowstk(){
+//     let low=prdcs.filter((p)=>{
+//         return p.stock < p.reorder
+
+//     });
+//     let show = document.createElement("p");
+//     show.innerHTML = ` o Low stock products alerts  : <br>${low.map(p=>`${p.name} (${p.stock})`).join("<br>")}`;
+//     data.appendChild(show);
+//     disprod()
+    
+//   }
+
+
+
+
+
+//   function topselling(){
+//      let show = document.createElement("p");
+//     let top = prdcs.filter((p)=>p.sold > 10).sort((a,b)=>b.sold - a.sold).slice(0,3); // slice(-3)
+//      show.innerHTML = ` o Top Selling : <br>${top.map(p=>`${p.name} (${p.sold})`).join("<br>")}`;
+//     data.appendChild(show);
+//     disprod()
+   
+
+    
+
+//   }
+
+
+
+
+//   function slow(){
+//      let show = document.createElement("p");
+//     let top = prdcs.filter((p)=>p.sold < 10 ).sort((a,b)=>b.sold - a.sold).slice(0,3); // slice(-3)
+//      show.innerHTML = ` o slow moving : <br>${top.map(p=>`${p.name} (${p.sold})`).join("<br>")}`;
+//     data.appendChild(show);
+//     disprod()
+    
+//   }
+
+
+
+//   function valuation(){
+//     let totalval = prdcs.reduce((total,p)=>{
+//         return total + (p.stock * p.price);
+//     },0);
+
+//     let show = document.createElement("p");
+//     show.innerHTML = `
+//     <h1> your inventy value </h1>
+//     o Total Inventory Value : ${totalval}`;
+//     valu.appendChild(show);
+//      disprod()
+     
+//   }
+
+  
+
+
+
+//   function updadata() {
+//   data.innerHTML = "";   // clear old reports
+//   valu.innerHTML = "";
+
+//   lowstk();
+//   topselling();
+//   slow();
+//   valuation();
+// }
+
+
+
+
+
+
+
+
+
+
+function repo(){
+
+
+
+
+     data.innerHTML = "";
+    valu.innerHTML = "";
+    
+    let low=prdcs.filter((p)=>{
+        return p.stock < p.reorder
+
+    });
+    let show1 = document.createElement("p");
+    show1.innerHTML = ` o Low stock products alerts  : <br>${low.map(p=>`${p.name} (${p.stock})`).join("<br>")}`;
+    data.appendChild(show1);
+    // disprod()
+
+
+
+
+
+
+      let show2 = document.createElement("p");
+    let top1 = prdcs.filter((p)=>p.sold > 10).sort((a,b)=>b.sold - a.sold).slice(0,3); // slice(-3)
+     show2.innerHTML = ` o Top Selling : <br>${top1.map(p=>`${p.name} (${p.sold})`).join("<br>")}`;
+    data.appendChild(show2);
+    // disprod()
+
+
+
+
+
+     let show = document.createElement("p");
+    let top2 = prdcs.filter((p)=>p.sold < 10 ).sort((a,b)=>b.sold - a.sold).slice(0,3); // slice(-3)
+     show.innerHTML = ` o slow moving : <br>${top2.map(p=>`${p.name} (${p.sold})`).join("<br>")}`;
+    data.appendChild(show);
+
+
+
+
+
+
+ let totalval = prdcs.reduce((total,p)=>{
+        return total + (p.stock * p.price);
+    },0);
+
+    let show3 = document.createElement("p");
+    show3.innerHTML = `
+    <h1> your inventy value </h1>
+    o Total Inventory Value : ${totalval}`;
+    valu.appendChild(show3);
+    //  disprod()
+
+
+
+}
+
+
+
+
+function upd(){
+disprod()
+repo()
+}
+
+
+upd()
+//   valuation()
+
+
+
+// lowstk()
+// topselling()
+// slow()
+    </script>
+</body>
+</html>
