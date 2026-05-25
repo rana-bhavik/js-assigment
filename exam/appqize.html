@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz App</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: radial-gradient(circle at top,#1e3c72,#0f172a);
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:650px;
+    background:#fff;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.4);
+}
+
+/* START SCREEN */
+#startScreen{
+    text-align:center;
+    padding:30px;
+}
+
+#startScreen h1{
+    font-size:34px;
+    color:#1e3c72;
+}
+
+#startScreen p{
+    margin:10px 0 20px;
+    color:#555;
+}
+
+/* BUTTON */
+button{
+    border:none;
+    padding:12px 20px;
+    border-radius:12px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+    background:#1e3c72;
+    color:white;
+}
+
+button:hover{
+    transform:scale(1.05);
+    background:#0f2550;
+}
+
+/* TOP */
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    background:#f1f5ff;
+    padding:12px;
+    border-radius:12px;
+}
+
+/* QUESTION */
+.show h2{
+    font-size:20px;
+    margin-bottom:15px;
+}
+
+/* OPTIONS */
+.option{
+    display:block;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:12px;
+    border:2px solid #eee;
+    cursor:pointer;
+    background:#fafafa;
+    transition:0.2s;
+}
+
+.option:hover{
+    border-color:#1e3c72;
+    background:#eef3ff;
+}
+
+.option input{
+    margin-right:10px;
+}
+
+/* NEXT */
+#nxt{
+    width:100%;
+    margin-top:15px;
+}
+
+/* RESULT */
+.report{
+    text-align:center;
+    background:#1e3c72;
+    color:white;
+    padding:20px;
+    border-radius:15px;
+}
+
+/* SUMMARY */
+.result-card{
+    background:#f8faff;
+    border-left:5px solid #1e3c72;
+    padding:15px;
+    margin-top:15px;
+    border-radius:12px;
+}
+
+.correct{
+    color:green;
+    font-weight:bold;
+}
+
+.incorrect{
+    color:red;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="startScreen">
+    <h1>Interactive Quiz App</h1>
+    <p>Total Questions : 5</p>
+    <button id="stbtn">Start Quiz</button>
+</div>
+
+<div class="top" style="display:none;">
+    <h3 id="qnum"></h3>
+    <h3>Time: <span id="timer">0</span> sec</h3>
+</div>
+
+<div class="show"></div>
+
+<button id="nxt" style="display:none;">Next Question</button>
+
+<div class="finalsummery"></div>
+
+</div>
+
+<script>
+
+let qes = [
+{
+question:"What does HTML stand for?",
+options:["Hyper Text Markup Language","Home Tool Markup Language","Hyperlinks Text","None"],
+answer:"Hyper Text Markup Language",
+explanation:"HTML is used for webpage structure."
+},
+{
+question:"Which language is used for styling?",
+options:["HTML","CSS","Python","Java"],
+answer:"CSS",
+explanation:"CSS is used for design and styling."
+},
+{
+question:"Which language adds functionality?",
+options:["CSS","HTML","JavaScript","C"],
+answer:"JavaScript",
+explanation:"JavaScript adds interactivity."
+},
+{
+question:"Which symbol is used for comments in JS?",
+options:["//","##","**","<!-- -->"],
+answer:"//",
+explanation:"// is used for single line comments."
+},
+{
+question:"Which function shows alert popup?",
+options:["alert()","print()","log()","write()"],
+answer:"alert()",
+explanation:"alert() shows popup messages."
+}
+];
+
+let ans = [];
+let curret = 0;
+let score = 0;
+let time = 0;
+let timer;
+
+let sbt = document.querySelector("#stbtn");
+let show = document.querySelector(".show");
+let nxt = document.querySelector("#nxt");
+
+sbt.addEventListener("click",()=>{
+
+document.querySelector("#startScreen").style.display="none";
+document.querySelector(".top").style.display="flex";
+nxt.style.display="block";
+
+timer = setInterval(()=>{
+time++;
+document.querySelector("#timer").innerText = time;
+},1000);
+
+showq();
+
+});
+
+function showq(){
+
+let q = qes[curret];
+
+document.querySelector("#qnum").innerText =
+`Q ${curret+1} / ${qes.length}`;
+
+show.innerHTML = `
+<h2>${q.question}</h2>
+`;
+
+q.options.forEach(op=>{
+show.innerHTML += `
+<label class="option">
+<input type="radio" name="optn" value="${op}">
+${op}
+</label>
+`;
+});
+
+}
+
+nxt.addEventListener("click",()=>{
+
+let select = document.querySelector('input[name="optn"]:checked');
+
+if(select){
+ans[curret]=select.value;
+if(select.value===qes[curret].answer){
+score++;
+}
+}else{
+ans[curret]="Not Answered";
+}
+
+curret++;
+
+if(curret<qes.length){
+showq();
+}else{
+
+clearInterval(timer);
+
+show.innerHTML=`
+<div class="report">
+<h2>Quiz Completed</h2>
+<p>Score: ${score}/${qes.length}</p>
+<p>Time: ${time} sec</p>
+</div>
+`;
+
+nxt.style.display="none";
+summery();
+}
+
+});
+
+function summery(){
+
+qes.forEach((q,i)=>{
+
+let res = ans[i]===q.answer?"Correct":"Incorrect";
+
+document.querySelector(".finalsummery").innerHTML+=`
+
+<div class="result-card">
+<h3>Q${i+1}: ${q.question}</h3>
+<p>Your Answer: ${ans[i]}</p>
+<p>Correct Answer: ${q.answer}</p>
+<p>${q.explanation}</p>
+<p class="${res==="Correct"?"correct":"incorrect"}">${res}</p>
+</div>
+
+`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
